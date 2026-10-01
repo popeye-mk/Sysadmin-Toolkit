@@ -1,0 +1,30 @@
+{
+  "_comment": "Manifest for New-DesktopShortcuts.ps1. Name = shortcut name. Target = program/file/folder/UNC path, or a URL (becomes an Internet Shortcut). Optional: Arguments, WorkingDirectory, Icon ('path.ico' or 'file.exe,index' or 'file.dll,index'), RunAsAdmin (true/false), Description. Environment variables like %ProgramFiles% are expanded.",
+  "shortcuts": [
+    {
+      "Name": "Helpdesk",
+      "Target": "https://helpdesk.contoso.local",
+      "Icon": "%SystemRoot%\\System32\\shell32.dll,14",
+      "Description": "Open a ticket with IT"
+    },
+    {
+      "Name": "Shared drive (S:)",
+      "Target": "\\\\fs01\\Shared",
+      "Icon": "%SystemRoot%\\System32\\imageres.dll,137",
+      "Description": "Department share"
+    },
+    {
+      "Name": "Outlook",
+      "Target": "%ProgramFiles%\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE",
+      "Description": "Mail"
+    },
+    {
+      "Name": "Sysadmin-Toolkit",
+      "Target": "C:\\Sysadmin-Toolkit\\Sysadmin-Toolkit.bat",
+      "WorkingDirectory": "C:\\Sysadmin-Toolkit",
+      "Icon": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe,0",
+      "RunAsAdmin": true,
+      "Description": "IT toolkit menu"
+    }
+  ]
+}

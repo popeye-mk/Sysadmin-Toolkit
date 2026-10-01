@@ -1,0 +1,221 @@
+{
+  "title": "Sysadmin-Toolkit — Windows Fleet Health",
+  "description": "Fleet health from the Sysadmin-Toolkit Zabbix template (Sysadmin-Toolkit Windows). Uses the grafana-zabbix (Zabbix) data source plugin. After import: (1) point the 'Zabbix' template variable at your Zabbix data source, (2) the 'Host group' variable defaults to any group — narrow it to where you linked the template.",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "timezone": "browser",
+  "refresh": "5m",
+  "time": { "from": "now-24h", "to": "now" },
+  "tags": ["sysadmin-toolkit", "zabbix"],
+  "templating": {
+    "list": [
+      {
+        "name": "DS_ZABBIX",
+        "type": "datasource",
+        "query": "alexanderzobnin-zabbix-datasource",
+        "label": "Zabbix data source",
+        "current": {}
+      },
+      {
+        "name": "host_group",
+        "type": "textbox",
+        "label": "Zabbix host group",
+        "query": "",
+        "current": { "text": "", "value": "" },
+        "description": "Type the Zabbix host group your Sysadmin-Toolkit hosts are in, e.g. Windows Workstations"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Fleet average health score",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "${DS_ZABBIX}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 50 },
+              { "color": "green", "value": 70 }
+            ]
+          }
+        }
+      },
+      "options": { "reduceOptions": { "calcs": ["mean"] }, "orientation": "horizontal" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "Metrics",
+          "resultFormat": "time_series",
+          "group": { "filter": "$host_group" },
+          "host": { "filter": "/.*/" },
+          "item": { "filter": "Toolkit: health score" },
+          "functions": [{ "def": { "name": "avg", "category": "Aggregate" }, "params": [] }]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Hosts with reboot pending",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "${DS_ZABBIX}" },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 1 }
+            ]
+          }
+        }
+      },
+      "options": { "reduceOptions": { "calcs": ["count"] } },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "Metrics",
+          "resultFormat": "time_series",
+          "group": { "filter": "$host_group" },
+          "host": { "filter": "/.*/" },
+          "item": { "filter": "Toolkit: pending reboot" },
+          "functions": [{ "def": { "name": "filterAnd", "category": "Filter" }, "params": ["1"] }]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Hosts with Defender real-time OFF",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "${DS_ZABBIX}" },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1 }
+            ]
+          }
+        }
+      },
+      "options": { "reduceOptions": { "calcs": ["count"] } },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "Metrics",
+          "resultFormat": "time_series",
+          "group": { "filter": "$host_group" },
+          "host": { "filter": "/.*/" },
+          "item": { "filter": "Toolkit: Defender real-time protection" },
+          "functions": [{ "def": { "name": "filterAnd", "category": "Filter" }, "params": ["0"] }]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Hosts below 15% free disk",
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "${DS_ZABBIX}" },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 1 }
+            ]
+          }
+        }
+      },
+      "options": { "reduceOptions": { "calcs": ["count"] } },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "Metrics",
+          "resultFormat": "time_series",
+          "group": { "filter": "$host_group" },
+          "host": { "filter": "/.*/" },
+          "item": { "filter": "Toolkit: min disk free %" },
+          "functions": [{ "def": { "name": "bottom", "category": "Filter" }, "params": ["50", "avg"] }]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Health score trend, per host",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 6 },
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "${DS_ZABBIX}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "min": 0,
+          "max": 100,
+          "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 5 },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 50 },
+              { "color": "green", "value": 70 }
+            ]
+          }
+        }
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["last", "min"] } },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "Metrics",
+          "resultFormat": "time_series",
+          "group": { "filter": "$host_group" },
+          "host": { "filter": "/.*/" },
+          "item": { "filter": "Toolkit: health score" }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "table",
+      "title": "Current health score by host (lowest first)",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 16 },
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "${DS_ZABBIX}" },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 50 },
+              { "color": "green", "value": 70 }
+            ]
+          },
+          "custom": { "cellOptions": { "type": "color-background" } }
+        }
+      },
+      "options": { "sortBy": [{ "displayName": "Last", "desc": false }] },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "Metrics",
+          "resultFormat": "table",
+          "group": { "filter": "$host_group" },
+          "host": { "filter": "/.*/" },
+          "item": { "filter": "Toolkit: health score" }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "_readme": "Fill this in ONCE for your environment. Every script reads the values it needs from here when you don't pass them on the command line. Empty string or empty list = not set (the script then behaves as documented, asks, or skips). Explicit command-line parameters always win. Relative file paths are relative to this Config folder. See README.md in this folder.",
+
+  "Company": {
+    "_used_by": "Set-Branding (About page support info), New-DesktopShortcuts (via desktop-shortcuts.json)",
+    "Name": "",
+    "SupportPhone": "",
+    "SupportHours": "",
+    "SupportURL": "",
+    "HelpdeskURL": ""
+  },
+
+  "Branding": {
+    "_used_by": "Set-Branding. Drop the files in Config\\Branding\\ with these names; a missing file is skipped.",
+    "Wallpaper": "Branding\\wallpaper.jpg",
+    "LockScreen": "Branding\\lockscreen.jpg",
+    "Logo": "Branding\\logo.bmp"
+  },
+
+  "ActiveDirectory": {
+    "_used_by": "New-ADUserOnboard, New-BulkADUsers, Disable-ADUserOffboard, New-EmployeeOnboard, Disable-EmployeeOffboard, Join-Domain, Test-ADHealth, Deploy-GPOCentralStore, Get-ADPasswordExpiry",
+    "DomainDns": "",
+    "DomainController": "",
+    "UpnSuffix": "",
+    "NewUserOU": "",
+    "DisabledOU": "",
+    "ComputerOU": "",
+    "SearchBase": "",
+    "DefaultGroups": [],
+    "HomeDriveRoot": "",
+    "PasswordExpiryWarnDays": 14
+  },
+
+  "Entra": {
+    "_used_by": "New-EntraUserOnboard, New-EmployeeOnboard, New-IntuneConfigProfile-Win11Baseline, Deploy-ScriptViaIntune",
+    "UsageLocation": "BE",
+    "LicenseSkuIds": [],
+    "DefaultGroups": [],
+    "DefaultDeviceGroup": ""
+  },
+
+  "Shares": {
+    "_used_by": "Set-DesktopExperience (Quick Access pins), Get-SharePermissionReport, Get-EnvironmentDiscovery",
+    "FileServer": "",
+    "QuickAccessPins": []
+  },
+
+  "Desktop": {
+    "_used_by": "Set-DesktopExperience, Set-StartTaskbarLayout, New-DesktopShortcuts. Theme: Dark / Light / Skip. IconSize: Small / Medium / Large / Skip. Pins: AUMIDs or exe/.lnk paths (Get-StartApps lists AUMIDs).",
+    "Theme": "Dark",
+    "IconSize": "Skip",
+    "StartPins": [],
+    "TaskbarPins": [],
+    "ShortcutsManifest": "desktop-shortcuts.json"
+  },
+
+  "Regional": {
+    "_used_by": "Set-RegionalSettings, Initialize-NewPC. Belgian Dutch defaults; French site: fr-BE + 080c:0000080c.",
+    "Culture": "nl-BE",
+    "KeyboardTip": "0813:00000813",
+    "TimeZone": "Romance Standard Time",
+    "HomeLocationGeoId": 21,
+    "ShortDate": "dd/MM/yyyy"
+  },
+
+  "Power": {
+    "_used_by": "Set-PowerAndLock. Plan: Balanced / HighPerformance / Skip. Minutes: -1 = leave as is, 0 = never. LockAfterMinutes 0 = don't change.",
+    "Plan": "Skip",
+    "ScreenOffMinutesAC": -1,
+    "ScreenOffMinutesDC": -1,
+    "SleepMinutesAC": -1,
+    "SleepMinutesDC": -1,
+    "LockAfterMinutes": 10
+  },
+
+  "Provisioning": {
+    "_used_by": "Initialize-NewPC (winget IDs), Remove-Bloatware",
+    "Apps": [],
+    "PowerPlan": "",
+    "BloatwareExtra": [],
+    "BloatwareKeep": []
+  },
+
+  "Network": {
+    "_used_by": "Get-NetworkDiagnostics, Invoke-SubnetScan, Get-DHCPScopeReport, Get-StaleDNSRecords",
+    "TargetHosts": [],
+    "Subnet": "",
+    "DhcpServers": [],
+    "DhcpWarnPercent": 80,
+    "DhcpCritPercent": 90,
+    "DnsServer": "",
+    "DnsZones": []
+  },
+
+  "Alerting": {
+    "_used_by": "Send-ToolkitAlert, Invoke-HealthCheck, Install-HealthCheckTask, Install-AllScheduledTasks. Prefer 19-Secrets for the webhook if this folder is readable by non-admins.",
+    "TeamsWebhookUrl": "",
+    "SmtpServer": "",
+    "SmtpPort": 25,
+    "EmailFrom": "",
+    "EmailTo": ""
+  },
+
+  "Monitoring": {
+    "_used_by": "Install-ZabbixAgent, Invoke-HealthCheck (extra services that must run), and the planned fleet/Zabbix integration (NEXT.md 0.1/0.2). Nothing about Zabbix is hardcoded in the kit: the server address, the web/API URL and the host names all come from here (or from the command line), so the same kit works against any Zabbix - lab today, the employer's tomorrow, one per customer later. Put the API token in 19-Secrets, not here.",
+    "ZabbixUrl": "",
+    "ZabbixServer": "",
+    "ZabbixServerActive": "",
+    "ZabbixInstallerPath": "",
+    "HealthCheckServices": []
+  },
+
+  "Security": {
+    "_used_by": "Get-LocalAdminAudit (accounts that are allowed in local Administrators), Get-FirewallAuditReport",
+    "ExpectedLocalAdmins": [],
+    "FlagPorts": []
+  },
+
+  "GPO": {
+    "_used_by": "Deploy-GPOCentralStore, Backup-GPOs",
+    "AdmxMsi": "",
+    "BackupRoot": ""
+  },
+
+  "Reports": {
+    "_used_by": "Every report script: where HTML/CSV reports go when you don't pass -OutputPath. Empty = the kit's Reports folder.",
+    "OutputPath": "",
+    "CertWarningDays": 30
+  },
+
+  "Schedules": {
+    "_used_by": "Install-AllScheduledTasks",
+    "HealthCheckTime": "08:00",
+    "ADHealthTime": "07:00",
+    "PasswordExpiryDay": "Monday",
+    "PasswordExpiryTime": "08:15",
+    "CertExpiryDay": "Monday",
+    "CertExpiryTime": "08:30"
+  }
+}

@@ -1,0 +1,10 @@
+secrets.json
+Logs/
+Backups/
+/Reports/
+**/Reports/*.html
+**/Reports/*.csv
+**/Reports/*.json
+!**/Reports/README.md
+*.log
+.DS_Store

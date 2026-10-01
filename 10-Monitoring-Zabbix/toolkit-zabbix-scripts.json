@@ -1,0 +1,16 @@
+{
+  "_readme": "Definitions for New-ZabbixToolkitScripts.ps1. Each entry becomes a Zabbix manual host-action global script (Alerts > Scripts) that runs a kit script on the selected host and shows the output. Only fast, read-only scripts belong here (they return an answer in a second). Scripts that change the machine are launched detached or pushed via GPO/Intune - see Zabbix-Run-Toolkit-Scripts.md. Add your own by copying an entry. 'script' is the path under C:\\Sysadmin-Toolkit; 'args' is optional.",
+  "menuPathPrefix": "Toolkit",
+  "scripts": [
+    { "name": "Local admin audit",        "script": "17-Security-Audit\\Get-LocalAdminAudit.ps1",        "description": "Who is in the local Administrators group, flagged against the expected list." },
+    { "name": "Health check",             "script": "07-Reporting-Health\\Invoke-HealthCheck.ps1",       "description": "Scored health: disk, memory, services, reboot pending, uptime, updates, Defender." },
+    { "name": "PC inventory",             "script": "07-Reporting-Health\\Get-PCInventory.ps1",          "description": "Full per-PC inventory (hardware, OS, disks, network, installed software)." },
+    { "name": "Certificate expiry",       "script": "07-Reporting-Health\\Get-CertExpiryReport.ps1",     "description": "Certificates expiring soon in the machine stores." },
+    { "name": "Firewall audit",           "script": "07-Reporting-Health\\Get-FirewallAuditReport.ps1",  "description": "Firewall profiles, inbound allow rules, listening ports; flags risky ports." },
+    { "name": "Win11 readiness",          "script": "03-Windows10\\Test-Win11Readiness.ps1",             "description": "TPM / Secure Boot / UEFI / CPU / RAM / disk check + Win10 end-of-support countdown." },
+    { "name": "Network diagnostics",      "script": "05-Network\\Get-NetworkDiagnostics.ps1",            "description": "Adapters, gateway, DNS, internet reachability, public IP." },
+    { "name": "Share permissions",        "script": "16-FileShares\\Get-SharePermissionReport.ps1",      "description": "Share + NTFS permissions and orphaned SIDs on this host." },
+    { "name": "Password expiry (AD)",     "script": "01-Users\\Get-ADPasswordExpiry.ps1",                "description": "AD accounts whose passwords expire soon. Run on a DC / RSAT machine." },
+    { "name": "AD health (DC)",           "script": "12-AD-Health\\Test-ADHealth.ps1",                   "description": "dcdiag + replication + FSMO + SYSVOL, scored. Run on a domain controller." }
+  ]
+}

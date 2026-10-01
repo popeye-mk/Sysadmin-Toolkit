@@ -1,0 +1,4 @@
+GivenName,Surname,SamAccountName,OU,Groups,Title,Department
+Jan,Peeters,,"OU=Staff,DC=contoso,DC=local","Staff;VPN-Users",Support Engineer,IT
+Sofie,Maes,,"OU=Staff,DC=contoso,DC=local","Staff;HR-Read",HR Officer,HR
+Tom,De Vries,tdevries,"OU=Staff,DC=contoso,DC=local","Staff",Accountant,Finance

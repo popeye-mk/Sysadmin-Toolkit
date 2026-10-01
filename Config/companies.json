@@ -1,0 +1,11 @@
+{
+  "_readme": "Optional map for the fleet runner (21-Fleet\\Get-ManagedFleet.ps1 and Invoke-ToolkitFleet.ps1). Maps a friendly company name to its Zabbix host group, AD OU, and (optionally) a per-company Config folder under Config\\Companies\\<name>\\. Without this file, -Company is treated as the Zabbix host-group name directly. Add one block per customer.",
+  "companies": [
+    {
+      "name": "Example",
+      "zabbixGroup": "Example/Windows",
+      "adOU": "OU=Workstations,OU=Example,DC=example,DC=local",
+      "config": "Companies\\Example"
+    }
+  ]
+}

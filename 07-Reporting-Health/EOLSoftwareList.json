@@ -1,0 +1,14 @@
+{
+  "_comment": "Seed list only — maintain this yourself over time. Each 'match' is matched against installed software DisplayName with -match (regex, case-insensitive). This is not an authoritative or current EOL feed; it's a starting point covering software that's long, unambiguously out of support as of when this list was written.",
+  "_lastReviewed": "2026-09",
+  "entries": [
+    { "match": "Adobe Flash Player", "note": "EOL Dec 2020 — should not exist anywhere; Adobe actively blocks it from running" },
+    { "match": "^Java \\d+ Update", "note": "Check version — public Oracle JRE updates for old major versions are long EOL; prefer a supported JDK/JRE build" },
+    { "match": "Windows 7|Windows Server 2008(?!\\s*R2)", "note": "OS-level EOL — flagged here only if it shows up as an installed 'compatibility' package reference" },
+    { "match": "Microsoft SQL Server 2008", "note": "EOL Jul 2019" },
+    { "match": "Microsoft SQL Server 2012", "note": "EOL Jul 2022" },
+    { "match": "Microsoft \\.NET Framework 3\\.5 SP1|\\.NET Framework 2\\.0", "note": "Superseded — check whether anything still requires it before removing" },
+    { "match": "Silverlight", "note": "EOL Oct 2021" },
+    { "match": "QuickTime", "note": "Apple stopped supporting QuickTime for Windows in 2016 — known unpatched vulnerabilities" }
+  ]
+}

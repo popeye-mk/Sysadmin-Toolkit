@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.0</version>
+    <template_groups>
+        <template_group>
+            <uuid>6d38a45cc6a4485e9d22d3ad0c2194e1</uuid>
+            <name>Templates/Sysadmin-Toolkit</name>
+        </template_group>
+    </template_groups>
+    <templates>
+        <template>
+            <uuid>446204d90442403c8cfb49fca2178eca</uuid>
+            <template>Sysadmin-Toolkit Windows</template>
+            <name>Sysadmin-Toolkit Windows</name>
+            <description>Windows endpoint health, fed by the Sysadmin-Toolkit Zabbix UserParameter (toolkit.metrics). One master JSON item, dependent items split the fields. See 10-Monitoring-Zabbix/README.md for setup.</description>
+            <groups>
+                <group>
+                    <name>Templates/Sysadmin-Toolkit</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>daf2f92fce9142a3bf64e140133a5766</uuid>
+                    <name>Toolkit: raw metrics (JSON)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>toolkit.metrics</key>
+                    <delay>5m</delay>
+                    <history>7d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>Raw JSON from Get-ToolkitZabbixMetrics.ps1. Every other Toolkit item depends on this one — nothing else re-runs the script.</description>
+                </item>
+                <item>
+                    <uuid>dc99c5a41ea642808450cc48a0d825b7</uuid>
+                    <name>Toolkit: health score</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.health.score</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <description>0-100, same scoring as 07-Reporting-Health\Invoke-HealthCheck.ps1 at a lighter scope.</description>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.healthScore</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>8abbd0f99fdb42d2b1beffabc1bd88ba</uuid>
+                    <name>Toolkit: health grade</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.health.grade</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.healthGrade</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>fbfe26496de04ab2b0616dbc39eeca88</uuid>
+                    <name>Toolkit: fail count</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.health.failcount</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.failCount</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>c6abbf2a21084874a6ef1bea33634653</uuid>
+                    <name>Toolkit: warn count</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.health.warncount</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.warnCount</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>e3bcf6715e034c8fa887a668b6dc2fe5</uuid>
+                    <name>Toolkit: pending reboot</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.pendingreboot</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <trends>365d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <valuemap>
+                        <name>Toolkit: yes/no</name>
+                    </valuemap>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.pendingReboot</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>83163fc91ccc49f1937364d53305ac4d</uuid>
+                    <name>Toolkit: min disk free %</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.disk.freepctmin</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <units>%</units>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.diskFreePctMin</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>9b52d6123cb74eba9790b715875ccd5b</uuid>
+                    <name>Toolkit: uptime</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.uptime.days</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>d</units>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.uptimeDays</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>6d8087a4f9b9415281ecae152cb8513b</uuid>
+                    <name>Toolkit: Defender real-time protection</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.defender.realtime</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <valuemap>
+                        <name>Toolkit: yes/no</name>
+                    </valuemap>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.defenderRealTime</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>afd9956cb8054c688f99b95629c5ae71</uuid>
+                    <name>Toolkit: Defender signature age</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.defender.sigagedays</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <units>d</units>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.defenderSigAgeDays</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>d1509ec6cd734d0ba088daafa113749c</uuid>
+                    <name>Toolkit: bloatware count (quick list)</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.bloatware.count</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.bloatwareCount</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>240da27623064a6f94081e4ecb003b10</uuid>
+                    <name>Toolkit: AD passwords expiring soon</name>
+                    <type>DEPENDENT</type>
+                    <key>toolkit.ad.passwordexpirycount</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <value_type>FLOAT</value_type>
+                    <description>-1 / empty on a host with no AD module or no reachable DC — only meaningful on a DC or admin/management host.</description>
+                    <master_item>
+                        <key>toolkit.metrics</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.passwordExpiryCount</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+            </items>
+            <triggers>
+                <trigger>
+                    <uuid>dee9346de1a844bfb71688ed12e84687</uuid>
+                    <expression>last(/Sysadmin-Toolkit Windows/toolkit.health.score)&lt;70</expression>
+                    <name>{HOST.NAME}: health score below 70</name>
+                    <priority>WARNING</priority>
+                </trigger>
+                <trigger>
+                    <uuid>24f7bc8556174fe3806fc5c1a84a9b3f</uuid>
+                    <expression>last(/Sysadmin-Toolkit Windows/toolkit.health.score)&lt;50</expression>
+                    <name>{HOST.NAME}: health score below 50 — action needed</name>
+                    <priority>HIGH</priority>
+                </trigger>
+                <trigger>
+                    <uuid>5d56d6c5872e4919b2bec4e2eb35a78f</uuid>
+                    <expression>last(/Sysadmin-Toolkit Windows/toolkit.health.failcount)&gt;0</expression>
+                    <name>{HOST.NAME}: one or more health checks are FAILing</name>
+                    <priority>AVERAGE</priority>
+                </trigger>
+                <trigger>
+                    <uuid>6e14f7e0badf4b8ba64e5be631c08761</uuid>
+                    <expression>min(/Sysadmin-Toolkit Windows/toolkit.pendingreboot,#3)=1</expression>
+                    <name>{HOST.NAME}: reboot pending for 3+ polls</name>
+                    <priority>WARNING</priority>
+                </trigger>
+                <trigger>
+                    <uuid>2218fbe994184df2b58e22846f30e22a</uuid>
+                    <expression>last(/Sysadmin-Toolkit Windows/toolkit.disk.freepctmin)&lt;15</expression>
+                    <name>{HOST.NAME}: disk free space below 15%</name>
+                    <priority>WARNING</priority>
+                </trigger>
+                <trigger>
+                    <uuid>2e04698ff7024b3cbe0f0ea462001cdf</uuid>
+                    <expression>last(/Sysadmin-Toolkit Windows/toolkit.disk.freepctmin)&lt;8</expression>
+                    <name>{HOST.NAME}: disk free space critically low (below 8%)</name>
+                    <priority>HIGH</priority>
+                    <dependencies>
+                        <dependency>
+                            <name>{HOST.NAME}: disk free space below 15%</name>
+                            <expression>last(/Sysadmin-Toolkit Windows/toolkit.disk.freepctmin)&lt;15</expression>
+                        </dependency>
+                    </dependencies>
+                </trigger>
+                <trigger>
+                    <uuid>73a8722f02ef4906a7d3d21b7f63d606</uuid>
+                    <expression>last(/Sysadmin-Toolkit Windows/toolkit.defender.realtime)=0</expression>
+                    <name>{HOST.NAME}: Defender real-time protection is OFF</name>
+                    <priority>HIGH</priority>
+                </trigger>
+                <trigger>
+                    <uuid>6f90ccb0aa274f0abe4bcc8e2296de8e</uuid>
+                    <expression>last(/Sysadmin-Toolkit Windows/toolkit.ad.passwordexpirycount)&gt;0</expression>
+                    <name>{HOST.NAME}: AD accounts with passwords expiring within 14 days</name>
+                    <priority>WARNING</priority>
+                </trigger>
+            </triggers>
+            <valuemaps>
+                <valuemap>
+                    <uuid>cffb68132ada443ba0c07eaa9d12e713</uuid>
+                    <name>Toolkit: yes/no</name>
+                    <mappings>
+                        <mapping>
+                            <value>0</value>
+                            <newvalue>No</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>1</value>
+                            <newvalue>Yes</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
+            </valuemaps>
+        </template>
+    </templates>
+</zabbix_export>

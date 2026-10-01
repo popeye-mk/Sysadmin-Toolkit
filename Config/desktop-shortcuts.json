@@ -1,0 +1,13 @@
+{
+  "_readme": "Shortcuts New-DesktopShortcuts.ps1 puts on the desktop. Replace these with your real ones. Name = shortcut name. Target = program / file / folder / UNC path, or a URL (becomes an Internet Shortcut). Optional: Arguments, WorkingDirectory, Icon ('file.ico', 'file.exe,0' or 'shell32.dll,14'), RunAsAdmin (true/false), Description. %ProgramFiles% etc. are expanded. Example file: 20-Desktop-Experience\\shortcuts-EXAMPLE.json",
+  "shortcuts": [
+    {
+      "Name": "Sysadmin-Toolkit",
+      "Target": "C:\\Sysadmin-Toolkit\\Sysadmin-Toolkit.bat",
+      "WorkingDirectory": "C:\\Sysadmin-Toolkit",
+      "Icon": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe,0",
+      "RunAsAdmin": true,
+      "Description": "IT toolkit menu"
+    }
+  ]
+}
